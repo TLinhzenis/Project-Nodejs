@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Bài Hát</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+        }
+        button {
+            margin: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        /* Modal CSS */
+        .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 8px; }
+        .close { float: right; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <h2>🎵 Danh sách bài hát</h2>
+    <button onclick="openAddModal()">➕ Thêm bài hát</button>
+    <table>
+        <thead>
+            <tr>
+                <th>Hình ảnh</th>
+                <th>Tên bài hát</th>
+                <th>Ca sĩ</th>
+                <th>Thể loại</th>
+                <th>Chức năng</th>
+            </tr>
+        </thead>
+        <tbody id="songTable"></tbody>
+    </table>
+
+    <!-- Modal Thêm Bài Hát -->
+    <div id="addSongModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeAddModal()">&times;</span>
+            <h2>Thêm bài hát</h2>
+            <label>Tên bài hát:</label>
+            <input type="text" id="addMusicName">
+            <label>Ca sĩ:</label>
+            <input type="text" id="addSinger">
+            <label>Thể loại:</label>
+            <input type="text" id="addCategory">
+            <label>Hình ảnh:</label>
+            <input type="file" id="addImage">
+            <label>Audio:</label>
+            <input type="file" id="addAudio">
+            <button onclick="addSong()">Lưu</button>
+        </div>
+    </div>
+
+    <!-- Modal Sửa Bài Hát -->
+    <div id="editSongModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditModal()">&times;</span>
+            <h2>Sửa bài hát</h2>
+            <input type="hidden" id="editSongId">
+            <label>Tên bài hát:</label>
+            <input type="text" id="editMusicName">
+            <label>Ca sĩ:</label>
+            <input type="text" id="editSinger">
+            <label>Thể loại:</label>
+            <input type="text" id="editCategory">
+            <label>Hình ảnh (nếu muốn đổi):</label>
+            <input type="file" id="editImage">
+            <label>Audio (nếu muốn đổi):</label>
+            <input type="file" id="editAudio">
+            <button onclick="updateSong()">Cập nhật</button>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = "http://localhost:3000/api/songs";
+
+        // 🚀 Lấy danh sách bài hát từ API
+        async function fetchSongs() {
+            const res = await fetch(API_URL);
+            const songs = await res.json();
+            let html = "";
+            songs.forEach(song => {
+                html += `
+                    <tr>
+                        <td><img src="./uploads/images/${song.image}" alt="Ảnh"></td>
+                        <td>${song.musicName}</td>
+                        <td>${song.singer}</td>
+                        <td>${song.category}</td>
+                        <td>
+                            <button onclick="openEditModal('${song._id}', '${song.musicName}', '${song.singer}', '${song.category}')">✏ Sửa</button>
+                            <button onclick="deleteSong('${song._id}')">🗑 Xóa</button>
+                        </td>
+                    </tr>
+                `;
+            });
+            document.getElementById("songTable").innerHTML = html;
+        }
+
+        // 🚀 Mở Modal Thêm
+        function openAddModal() {
+            document.getElementById("addSongModal").style.display = "block";
+        }
+
+        // 🚀 Đóng Modal Thêm
+        function closeAddModal() {
+            document.getElementById("addSongModal").style.display = "none";
+        }
+
+        // 🚀 Thêm bài hát
+        async function addSong() {
+            let formData = new FormData();
+            formData.append("musicName", document.getElementById("addMusicName").value);
+            formData.append("singer", document.getElementById("addSinger").value);
+            formData.append("category", document.getElementById("addCategory").value);
+            formData.append("image", document.getElementById("addImage").files[0]);
+            formData.append("audio", document.getElementById("addAudio").files[0]);
+
+            await fetch(API_URL, { method: "POST", body: formData })
+                .then(res => res.json())
+                .then(() => {
+                    closeAddModal();
+                    fetchSongs();
+                });
+        }
+
+        // 🚀 Mở Modal Sửa
+        function openEditModal(id, name, singer, category) {
+            document.getElementById("editSongModal").style.display = "block";
+            document.getElementById("editSongId").value = id;
+            document.getElementById("editMusicName").value = name;
+            document.getElementById("editSinger").value = singer;
+            document.getElementById("editCategory").value = category;
+        }
+
+        // 🚀 Đóng Modal Sửa
+        function closeEditModal() {
+            document.getElementById("editSongModal").style.display = "none";
+        }
+
+        // 🚀 Cập nhật bài hát
+        async function updateSong() {
+            let songId = document.getElementById("editSongId").value;
+            let formData = new FormData();
+            formData.append("musicName", document.getElementById("editMusicName").value);
+            formData.append("singer", document.getElementById("editSinger").value);
+            formData.append("category", document.getElementById("editCategory").value);
+
+            if (document.getElementById("editImage").files.length > 0) {
+                formData.append("image", document.getElementById("editImage").files[0]);
+            }
+            if (document.getElementById("editAudio").files.length > 0) {
+                formData.append("audio", document.getElementById("editAudio").files[0]);
+            }
+
+            await fetch(`${API_URL}/${songId}`, { method: "PUT", body: formData })
+                .then(res => res.json())
+                .then(() => {
+                    closeEditModal();
+                    fetchSongs();
+                });
+        }
+
+        // 🚀 Xóa bài hát
+        async function deleteSong(id) {
+            if (confirm("Bạn có chắc chắn muốn xóa bài hát này?")) {
+                await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+                fetchSongs();
+            }
+        }
+
+        // 🚀 Khởi chạy khi load trang
+        fetchSongs();
+    </script>
+
+</body>
+</html>

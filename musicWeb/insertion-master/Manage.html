@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music App</title>
+    <!-- Thêm thư viện DataTables và jQuery -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="./css/manage.css">
+</head>
+<body>
+    <h1>Danh sách bài hát</h1>
+    <div style="text-align: center;">
+        <button onclick="toggleAddForm()">Thêm bài hát mới</button>
+    </div>
+
+    <!-- Form thêm bài hát -->
+    <div id="add-form-container" class="form-container">
+        <h3 id="add-form-title">Thêm bài hát mới</h3>
+        <form id="add-song-form" enctype="multipart/form-data">
+            <label for="addMusicName">Tên bài hát:</label>
+            <input type="text" id="addMusicName" name="musicName" required><br>
+            <label for="addSinger">Ca sĩ:</label>
+            <input type="text" id="addSinger" name="singer" required><br>
+            <label for="addCategory">Thể loại:</label>
+            <input type="text" id="addCategory" name="category" required><br>
+            <label for="addAudio">Chọn file audio:</label>
+            <input type="file" id="addAudio" name="audio"><br>
+            <label for="addImage">Chọn file ảnh:</label>
+            <input type="file" id="addImage" name="image"><br>
+            <button type="submit" id="add-submit-button">Thêm bài hát</button>
+            <button type="button" onclick="toggleAddForm()">Hủy</button>
+        </form>
+    </div>
+
+    <!-- Form chỉnh sửa bài hát -->
+    <div id="edit-form-container" class="form-container">
+        <h3 id="edit-form-title">Sửa bài hát</h3>
+        <form id="edit-song-form" enctype="multipart/form-data">
+            <input type="hidden" id="edit-song-id"> <!-- Trường ẩn để lưu _id -->
+            <label for="edit-musicName">Tên bài hát:</label>
+            <input type="text" id="edit-musicName" name="musicName" required><br>
+            <label for="edit-singer">Ca sĩ:</label>
+            <input type="text" id="edit-singer" name="singer" required><br>
+            <label for="edit-category">Thể loại:</label>
+            <input type="text" id="edit-category" name="category" required><br>
+            <label for="edit-audio">Chọn file audio:</label>
+            <input type="file" id="edit-audio" name="audio"><br>
+            <label for="edit-image">Chọn file ảnh:</label>
+            <input type="file" id="edit-image" name="image"><br>
+            <button type="submit" id="edit-submit-button">Lưu thay đổi</button>
+            <button type="button" onclick="toggleEditForm()">Hủy</button>
+        </form>
+    </div>
+
+    <!-- Overlay -->
+    <div id="overlay" class="overlay"></div>
+
+    <!-- Bảng hiển thị danh sách bài hát -->
+    <table id="songs-table" class="display">
+        <thead>
+            <tr>
+                <th>Tên bài hát</th>
+                <th>Ca sĩ</th>
+                <th>Thể loại</th>
+                <th>Audio</th>
+                <th>Ảnh</th>
+                <th>Chức năng</th>
+            </tr>
+        </thead>
+        <tbody id="songs-list"></tbody>
+    </table>
+
+    <!-- Thêm thư viện jQuery và DataTables -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+    <!-- JavaScript xử lý logic -->
+    <script src="./js/manage.js"></script>
+</body>
+</html>

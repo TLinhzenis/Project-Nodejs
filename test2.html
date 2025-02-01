@@ -1,0 +1,154 @@
+<script>
+    // Hàm tải danh sách bài hát
+    async function loadSongs() {
+        try {
+            const response = await fetch('http://localhost:3000/api/songs');
+            const songs = await response.json();
+
+            const songsList = document.getElementById('songs-list');
+            songsList.innerHTML = '';
+
+            songs.forEach(song => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${song.musicName}</td>
+                    <td>${song.singer}</td>
+                    <td>${song.category}</td>
+                    <td><audio controls><source src="/uploads/audio/${song.audio}" type="audio/mp3"></audio></td>
+                    <td><img src="/uploads/images/${song.image}" alt="${song.musicName}" width="100" height="100"></td>
+                    <td class="action-buttons">
+                        <button class="edit-button" onclick="editSong('${song._id}')">Sửa</button>
+                        <button class="delete-button" onclick="deleteSong('${song._id}')">Xóa</button>
+                    </td>
+                `;
+                songsList.appendChild(row);
+            });
+
+            $('#songs-table').DataTable();
+        } catch (err) {
+            console.error('Lỗi tải bài hát:', err);
+        }
+    }
+
+    // Tải danh sách bài hát khi trang được load
+    window.onload = loadSongs;
+
+    // Hàm hiển thị/ẩn form thêm bài hát
+    function toggleAddForm() {
+        const formContainer = document.getElementById('add-form-container');
+        const overlay = document.getElementById('overlay');
+        const isVisible = formContainer.style.display === 'block';
+        formContainer.style.display = isVisible ? 'none' : 'block';
+        overlay.style.display = isVisible ? 'none' : 'block';
+    }
+
+    // Hàm hiển thị/ẩn form chỉnh sửa bài hát
+    function toggleEditForm() {
+        const formContainer = document.getElementById('edit-form-container');
+        const overlay = document.getElementById('overlay');
+        const isVisible = formContainer.style.display === 'block';
+        formContainer.style.display = isVisible ? 'none' : 'block';
+        overlay.style.display = isVisible ? 'none' : 'block';
+    }
+
+    // Xử lý khi submit form thêm bài hát
+    document.getElementById('add-song-form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append('musicName', document.getElementById('add-musicName').value);
+        formData.append('singer', document.getElementById('add-singer').value);
+        formData.append('category', document.getElementById('add-category').value);
+        if (document.getElementById('add-audio').files[0]) {
+            formData.append('audio', document.getElementById('add-audio').files[0]);
+        }
+        if (document.getElementById('add-image').files[0]) {
+            formData.append('image', document.getElementById('add-image').files[0]);
+        }
+
+        try {
+            const response = await fetch('http://localhost:3000/api/songs', {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (response.ok) {
+                alert('Bài hát đã được thêm!');
+                toggleAddForm();
+                loadSongs();
+            } else {
+                alert('Có lỗi xảy ra!');
+            }
+        } catch (err) {
+            console.error('Lỗi khi thêm bài hát:', err);
+        }
+    });
+
+    // Xử lý khi submit form chỉnh sửa bài hát
+    document.getElementById('edit-song-form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append('musicName', document.getElementById('edit-musicName').value);
+        formData.append('singer', document.getElementById('edit-singer').value);
+        formData.append('category', document.getElementById('edit-category').value);
+        if (document.getElementById('edit-audio').files[0]) {
+            formData.append('audio', document.getElementById('edit-audio').files[0]);
+        }
+        if (document.getElementById('edit-image').files[0]) {
+            formData.append('image', document.getElementById('edit-image').files[0]);
+        }
+
+        const songId = document.getElementById('edit-song-id').value;
+
+        try {
+            const response = await fetch(`http://localhost:3000/api/songs/${songId}`, {
+                method: 'PUT',
+                body: formData,
+            });
+
+            if (response.ok) {
+                alert('Bài hát đã được cập nhật!');
+                toggleEditForm();
+                loadSongs();
+            } else {
+                alert('Có lỗi xảy ra!');
+            }
+        } catch (err) {
+            console.error('Lỗi khi cập nhật bài hát:', err);
+        }
+    });
+
+    // Hàm chỉnh sửa bài hát
+    async function editSong(id) {
+        try {
+            const response = await fetch(`http://localhost:3000/api/songs/${id}`);
+            if (!response.ok) {
+                throw new Error('Không thể tải thông tin bài hát');
+            }
+            const song = await response.json();
+
+            // Điền thông tin vào form chỉnh sửa
+            document.getElementById('edit-musicName').value = song.musicName;
+            document.getElementById('edit-singer').value = song.singer;
+            document.getElementById('edit-category').value = song.category;
+            document.getElementById('edit-song-id').value = song._id;
+
+            // Hiển thị form chỉnh sửa
+            toggleEditForm();
+        } catch (err) {
+            console.error('Lỗi khi tải thông tin bài hát:', err);
+        }
+    }
+
+    // Hàm xóa bài hát
+    async function deleteSong(id) {
+        if (confirm('Bạn có chắc chắn muốn xóa bài hát này?')) {
+            try {
+                await fetch(`http://localhost:3000/api/songs/${id}`, { method: 'DELETE' });
+                alert('Bài hát đã được xóa!');
+                loadSongs();
+            } catch (err) {
+                console.error('Lỗi xóa bài hát:', err);
+            }
+        }
+    }
+</script>
