@@ -1,197 +1,645 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản lý Bài Hát</title>
+    <title>Nguyen Ngoc Gia Huy's Portfolio</title>
+    <link href="https://kit.fontawesome.com/2b05088d83.js" crossorigin="anonymous" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
-        table {
-            width: 80%;
-            margin: 20px auto;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-        }
-        th {
-            background-color: #f4f4f4;
-        }
-        img {
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-        }
-        button {
-            margin: 5px;
-            padding: 5px 10px;
-            cursor: pointer;
-        }
-        /* Modal CSS */
-        .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 8px; }
-        .close { float: right; cursor: pointer; }
+        html {
+  height: 100%;
+  width: 100%;
+  scroll-behavior: smooth;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: Verdana, sans-serif;
+  box-sizing: border-box;
+}
+
+body {
+  background: #080808;
+  color: #fff;
+}
+
+#header {
+  width: 100%;
+  height: 100vh;
+  background-image: url('./Avatar.png');
+  background-size: cover;
+  background-position: center;
+}
+
+.container {
+  padding: 10px 10%;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.logo {
+  width: 140px;
+}
+
+nav ul li {
+  display: inline-block;
+  list-style: none;
+  margin: 10px 20px;
+}
+
+nav ul li a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 18px;
+  position: relative;
+}
+
+nav ul li a::after {
+  content: '';
+  width: 0;
+  height: 3px;
+  background: #f9a603;
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  transition: 0.5s;
+}
+
+nav ul li a:hover::after {
+  width: 100%;
+}
+
+.header-text {
+  margin-top: 20%;
+  font-size: 30px;
+}
+
+.header-text h1 {
+  font-size: 60px;
+  margin-top: 20px;
+}
+
+.header-text h1 span {
+  color: #f9a603;
+}
+
+/*-- -----------------------------About me------------------------- */
+#about {
+  padding: 80px 0;
+  color: #ababab;
+}
+
+p {
+  font-size: 18px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.about-col-1 {
+  flex-basis: 35%;
+}
+
+.about-col-1 img {
+  width: 100%;
+  border-radius: 15px;
+}
+
+.about-col-2 {
+  flex-basis: 60%;
+}
+
+.sub-title {
+  font-size: 60px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.tab-titles {
+  display: flex;
+  margin: 20px 0 40px;
+}
+
+.tab-links {
+  margin-right: 50px;
+  font-size: 20px;
+  font-weight: 500;
+  cursor: pointer;
+  position: relative;
+}
+
+.tab-links::after {
+  content: '';
+  width: 0;
+  height: 3px;
+  background: #f9a603;
+  position: absolute;
+  left: 0;
+  bottom: -8px;
+  transition: 0.5s;
+}
+
+.tab-links.active-link::after {
+  width: 100%;
+}
+
+.tab-contents ul li {
+  list-style: none;
+  margin: 10px 0;
+  font-size: 14px;
+}
+
+.tab-contents ul li span {
+  color: #f9a603;
+  font-size: 16px;
+}
+
+.tab-contents {
+  display: none;
+}
+
+.tab-contents.active-tab {
+  display: block;
+}
+
+/*-- -----------------------------languages------------------------- */
+#languages {
+  padding: 30px 0;
+}
+
+.languages-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-gap: 40px;
+  margin-top: 50px;
+}
+
+.languages-list img {
+  width: 65px;
+  height: 65px;
+  position: relative;
+  right: 10px;
+  bottom: 10px;
+}
+
+.languages-list div {
+  background: #262626;
+  padding: 40px;
+  font-size: 13px;
+  font-weight: 300;
+  border-radius: 10px;
+  transition: background 0.5s, transform 0.5s;
+}
+
+.languages-list div i {
+  font-size: 50px;
+  margin-bottom: 30px;
+}
+
+.languages-list div h2 {
+  font-size: 30px;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+
+.languages-list div a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 12px;
+  margin-top: 20px;
+  display: inline-block;
+}
+
+.languages-list div:hover {
+  background: #f9a603;
+  transform: translateY(-10px);
+}
+
+/*-- -----------------------------My projects------------------------- */
+
+#projects {
+  padding: 50px 0;
+}
+
+.project-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-gap: 40px;
+  margin-top: 50px;
+}
+
+.projects {
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.projects img {
+  width: 100%;
+  border-radius: 10px;
+  display: block;
+  transition: transform 0.5s;
+}
+
+.layer {
+  width: 100%;
+  height: 0%;
+  background: linear-gradient(rgba(0, 0, 0, 0.6), #f9a603);
+  border-radius: 10px;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0 40px;
+  text-align: center;
+  font-size: 14px;
+  transition: height 0.5s;
+}
+
+.layer h3 {
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.layer a {
+  margin-top: 20px;
+  color: #f9a603;
+  text-decoration: none;
+  font-size: 18px;
+  line-height: 60px;
+  background: #fff;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  text-align: center;
+}
+
+.projects:hover img {
+  transform: scale(1.1);
+}
+
+.projects:hover .layer {
+  height: 100%;
+}
+
+.btn {
+  display: block;
+  margin: 50px auto;
+  width: fit-content;
+  border: 1px solid #f9a603;
+  padding: 14px 50px;
+  border-radius: 6px;
+  text-decoration: none;
+  color: #fff;
+
+}
+
+/*-- -----------------------------contact------------------------- */
+.contact-left {
+  flex-basis: 100%;
+  align-content: center;
+  text-align: center;
+}
+
+.contact-right {
+  flex-basis: 60%;
+}
+
+.contact-left p {
+  margin-top: 30px;
+}
+
+.contact-left p i {
+  color: #f9a603;
+  margin-right: 15px;
+  font-size: 25px;
+}
+
+.social-icons {
+  margin-top: 30px;
+}
+
+.social-icons a {
+  text-decoration: none;
+  font-size: 30px;
+  margin-right: 15px;
+  color: #ababab;
+  display: inline-block;
+  transition: transform 0.5s;
+}
+
+.social-icons a:hover {
+  color: #f9a603;
+  transform: translateY(-5px);
+}
+
+.btn.btn2 {
+  display: inline-block;
+  background: #f9a603;
+}
+
+.contact-right form {
+  width: 100%;
+
+}
+
+form input,
+form textarea {
+  width: 100%;
+  border: 0;
+  outline: none;
+  background: #262626;
+  padding: 15px;
+  margin: 15px 0;
+  color: #fff;
+  font-size: 18px;
+  border-radius: 6px;
+}
+
+form .btn2 {
+  padding: 14px 60px;
+  font-size: 18px;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+/*-- -----------------------------css for small screens------------------------- */
+nav .fas {
+  display: none;
+}
+
+@media only screen and (max-width: 600px) {
+  #header {
+    background-image: url('./AvatarR.png');
+  }
+
+  .header-text {
+    margin-top: 100%;
+    font-size: 16px;
+  }
+
+  .header-text h1 {
+    font-size: 30px;
+  }
+
+  nav .fas {
+    display: block;
+    font-size: 30px;
+    position: relative;
+    top: 13px;
+  }
+
+  nav ul {
+    background: #f9a603;
+    position: fixed;
+    top: 0;
+    right: -200px;
+    width: 200px;
+    height: 100%;
+    padding-top: 50px;
+    z-index: 2;
+    transition: right 0.5s;
+  }
+
+  nav ul li {
+    display: block;
+    margin: 25px;
+  }
+
+  nav ul .fas {
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    cursor: pointer;
+  }
+
+  .sub-title {
+    font-size: 40px;
+  }
+
+  .about-col-1,
+  .about-col-2 {
+    flex-basis: 100%;
+  }
+
+  .about-col-1 {
+    margin-bottom: 30px;
+  }
+
+  .about-col-2 {
+    font-size: 14px;
+  }
+
+  .tab-links {
+    font-size: 16px;
+    margin-right: 20px;
+  }
+
+  .contact-left,
+  .contact-right {
+    flex-basis: 100%;
+  }
+
+  .languages-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-gap: 40px;
+    margin-top: 50px;
+  }
+
+  nav ul li a::after {
+    content: '';
+    width: 0;
+    height: 3px;
+    background: #262626;
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    transition: 0.5s;
+  }
+
+  nav ul li a:hover::after {
+    width: 100%;
+  }
+
+  .tab-contents ul li {
+    list-style: none;
+    margin: 10px 0;
+    font-size: 12px;
+  }
+
+  .tab-contents ul li span {
+    color: #f9a603;
+    font-size: 14px;
+  }
+
+  .tab-links {
+    margin-right: 50px;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    position: relative;
+  }
+}
     </style>
 </head>
 <body>
 
-    <h2>🎵 Danh sách bài hát</h2>
-    <button onclick="openAddModal()">➕ Thêm bài hát</button>
-    <table>
-        <thead>
-            <tr>
-                <th>Hình ảnh</th>
-                <th>Tên bài hát</th>
-                <th>Ca sĩ</th>
-                <th>Thể loại</th>
-                <th>Chức năng</th>
-            </tr>
-        </thead>
-        <tbody id="songTable"></tbody>
-    </table>
-
-    <!-- Modal Thêm Bài Hát -->
-    <div id="addSongModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeAddModal()">&times;</span>
-            <h2>Thêm bài hát</h2>
-            <label>Tên bài hát:</label>
-            <input type="text" id="addMusicName">
-            <label>Ca sĩ:</label>
-            <input type="text" id="addSinger">
-            <label>Thể loại:</label>
-            <input type="text" id="addCategory">
-            <label>Hình ảnh:</label>
-            <input type="file" id="addImage">
-            <label>Audio:</label>
-            <input type="file" id="addAudio">
-            <button onclick="addSong()">Lưu</button>
+    <div id="header">
+        <div class="container">
+            <nav>
+                <img src="" class="logo">
+                <ul id="sidemenu">
+                    <li><a href="#header">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#languages">Languages</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <i class="fas fa-times" onclick="closemenu()" aria-hidden="true"></i>
+                </ul>
+                <i class="fas fa-bars" onclick="openmenu()" aria-hidden="true"></i>
+            </nav>
+            <div class="header-text">
+                <p>Data Analysis</p>
+                <h1>Hi, I'm <span>Gia Huy</span><br>From Viet Nam</h1>
+            </div>
         </div>
     </div>
 
-    <!-- Modal Sửa Bài Hát -->
-    <div id="editSongModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeEditModal()">&times;</span>
-            <h2>Sửa bài hát</h2>
-            <input type="hidden" id="editSongId">
-            <label>Tên bài hát:</label>
-            <input type="text" id="editMusicName">
-            <label>Ca sĩ:</label>
-            <input type="text" id="editSinger">
-            <label>Thể loại:</label>
-            <input type="text" id="editCategory">
-            <label>Hình ảnh (nếu muốn đổi):</label>
-            <input type="file" id="editImage">
-            <label>Audio (nếu muốn đổi):</label>
-            <input type="file" id="editAudio">
-            <button onclick="updateSong()">Cập nhật</button>
+    <div id="about">
+        <div class="container">
+            <div class="row">
+                <div class="about-col-1">
+                    <img src="./Avatar2.jpg" alt="Avatar">
+                </div>
+                <div class="about-col-2">
+                    <h1 class="sub-title">About Me</h1>
+                    <p>My name is Nguyen Ngoc Gia Huy, a final-year Data Science major...</p>
+                    <div class="tab-titles">
+                        <p class="tab-links active-link" onclick="opentab('skills')">Data Analysis Skills</p>
+                        <p class="tab-links" onclick="opentab('softskill')">Soft Skills</p>
+                        <p class="tab-links" onclick="opentab('education')">Education</p>
+                    </div>
+                    <div class="tab-contents active-tab" id="skills">
+                        <ul>
+                            <li><strong>Cleaning Data:</strong> Basic knowledge of data cleaning...</li>
+                            <li><strong>Visualizing Data:</strong> Understanding the mean...</li>
+                            <li><strong>Explore Data Analysis:</strong> Summarizing and visualizing data...</li>
+                        </ul>
+                    </div>
+                    <div class="tab-contents" id="softskill">
+                        <ul>
+                            <li><strong>Good presentation skills:</strong> Clearly share complex ideas...</li>
+                            <li><strong>Good teamwork skills:</strong> Working well with others...</li>
+                            <li><strong>Strong time management skills:</strong> Organizing tasks well...</li>
+                        </ul>
+                    </div>
+                    <div class="tab-contents" id="education">
+                        <ul>
+                            <li><strong>2021 - Now:</strong> Ho Chi Minh University of Banking</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="languages">
+        <div class="container">
+            <h1 class="sub-title">Languages - Tools</h1>
+            <div class="languages-list">
+                <div><i class="fa-brands fa-python"></i><h2>Python</h2><p>Basic Python skills...</p></div>
+                <div><i class="fa-solid fa-chart-line"></i><h2>Power BI</h2><p>Know when to use different types of charts...</p></div>
+                <div><i class="fa-solid fa-database"></i><h2>SQL</h2><p>I can use query statements...</p></div>
+                <div><i class="fa-solid fa-brain"></i><h2>Machine Learning</h2><p>I have basic skills in machine learning...</p></div>
+                <div><i class="fa-solid fa-file-excel"></i><h2>Microsoft Excel</h2><p>I have strong Excel skills...</p></div>
+                <div><i class="fa-brands fa-microsoft"></i><h2>Microsoft Office</h2><p>I am skilled in MS Word...</p></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="projects">
+        <div class="container">
+            <h1 class="sub-title">My Projects</h1>
+            <div class="project-list">
+                <div class="projects">
+                    <img src="./work1.jpg" alt="Project 1">
+                    <div class="layer">
+                        <h3>Dynamic Sale Analysis</h3>
+                        <p>A Sales Director needs an online dashboard...</p>
+                        <a href="https://github.com/NgNgGiaHuy/Dynamic-Sales-Analytics-with-SQL-Power-BI" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                    </div>
+                </div>
+                <div class="projects">
+                    <img src="./work2.jpg" alt="Project 2">
+                    <div class="layer">
+                        <h3>Campaign Marketing Analysis</h3>
+                        <p>ShopSporting is experiencing a decline...</p>
+                        <a href="https://github.com/NgNgGiaHuy/Campaign-Marketing-Analyst-With-SQL-Python-Power-BI" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="contact">
+        <div class="container">
+            <h1 class="sub-title">Contact Me</h1>
+            <p><i class="fa-solid fa-paper-plane"></i> nguyenngocgiahuy77@gmail.com</p>
+            <p><i class="fa-solid fa-square-phone"></i> 0909156607</p>
+            <div class="social-icons">
+                <a href="https://github.com/NgNgGiaHuy" target="_blank"><i class="fa-brands fa-github"></i></a>
+                <a href="mailto:nguyenngocgiahuy77@gmail.com"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://www.linkedin.com/in/huy-nguyen-ngoc-gia-676798329/" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+            </div>
         </div>
     </div>
 
     <script>
-        const API_URL = "http://localhost:3000/api/songs";
+        var tablinks = document.getElementsByClassName('tab-links');
+        var tabcontents = document.getElementsByClassName('tab-contents');
 
-        // 🚀 Lấy danh sách bài hát từ API
-        async function fetchSongs() {
-            const res = await fetch(API_URL);
-            const songs = await res.json();
-            let html = "";
-            songs.forEach(song => {
-                html += `
-                    <tr>
-                        <td><img src="./uploads/images/${song.image}" alt="Ảnh"></td>
-                        <td>${song.musicName}</td>
-                        <td>${song.singer}</td>
-                        <td>${song.category}</td>
-                        <td>
-                            <button onclick="openEditModal('${song._id}', '${song.musicName}', '${song.singer}', '${song.category}')">✏ Sửa</button>
-                            <button onclick="deleteSong('${song._id}')">🗑 Xóa</button>
-                        </td>
-                    </tr>
-                `;
-            });
-            document.getElementById("songTable").innerHTML = html;
-        }
-
-        // 🚀 Mở Modal Thêm
-        function openAddModal() {
-            document.getElementById("addSongModal").style.display = "block";
-        }
-
-        // 🚀 Đóng Modal Thêm
-        function closeAddModal() {
-            document.getElementById("addSongModal").style.display = "none";
-        }
-
-        // 🚀 Thêm bài hát
-        async function addSong() {
-            let formData = new FormData();
-            formData.append("musicName", document.getElementById("addMusicName").value);
-            formData.append("singer", document.getElementById("addSinger").value);
-            formData.append("category", document.getElementById("addCategory").value);
-            formData.append("image", document.getElementById("addImage").files[0]);
-            formData.append("audio", document.getElementById("addAudio").files[0]);
-
-            await fetch(API_URL, { method: "POST", body: formData })
-                .then(res => res.json())
-                .then(() => {
-                    closeAddModal();
-                    fetchSongs();
-                });
-        }
-
-        // 🚀 Mở Modal Sửa
-        function openEditModal(id, name, singer, category) {
-            document.getElementById("editSongModal").style.display = "block";
-            document.getElementById("editSongId").value = id;
-            document.getElementById("editMusicName").value = name;
-            document.getElementById("editSinger").value = singer;
-            document.getElementById("editCategory").value = category;
-        }
-
-        // 🚀 Đóng Modal Sửa
-        function closeEditModal() {
-            document.getElementById("editSongModal").style.display = "none";
-        }
-
-        // 🚀 Cập nhật bài hát
-        async function updateSong() {
-            let songId = document.getElementById("editSongId").value;
-            let formData = new FormData();
-            formData.append("musicName", document.getElementById("editMusicName").value);
-            formData.append("singer", document.getElementById("editSinger").value);
-            formData.append("category", document.getElementById("editCategory").value);
-
-            if (document.getElementById("editImage").files.length > 0) {
-                formData.append("image", document.getElementById("editImage").files[0]);
+        function opentab(tabname) {
+            for (var tablink of tablinks) {
+                tablink.classList.remove("active-link");
             }
-            if (document.getElementById("editAudio").files.length > 0) {
-                formData.append("audio", document.getElementById("editAudio").files[0]);
+            for (var tabcontent of tabcontents) {
+                tabcontent.classList.remove("active-tab");
             }
-
-            await fetch(`${API_URL}/${songId}`, { method: "PUT", body: formData })
-                .then(res => res.json())
-                .then(() => {
-                    closeEditModal();
-                    fetchSongs();
-                });
+            event.currentTarget.classList.add("active-link");
+            document.getElementById(tabname).classList.add("active-tab");
         }
 
-        // 🚀 Xóa bài hát
-        async function deleteSong(id) {
-            if (confirm("Bạn có chắc chắn muốn xóa bài hát này?")) {
-                await fetch(`${API_URL}/${id}`, { method: "DELETE" });
-                fetchSongs();
-            }
+        var sidemenu = document.getElementById("sidemenu");
+
+        function openmenu() {
+            sidemenu.style.right = "0";
         }
 
-        // 🚀 Khởi chạy khi load trang
-        fetchSongs();
+        function closemenu() {
+            sidemenu.style.right = "-200px";
+        }
+
+        const parallax = document.getElementById("header");
+
+window.addEventListener("scroll", function() {
+  let offset = window.pageYOffset;
+  parallax.style.backgroundPositionY = offset * 1 + "px";
+})
     </script>
-
 </body>
 </html>
